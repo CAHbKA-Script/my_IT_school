@@ -1,0 +1,8 @@
+span {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.weekend {
+    font-weight: bold;
+}
