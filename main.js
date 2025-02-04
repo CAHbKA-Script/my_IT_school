@@ -63,14 +63,14 @@ function checkPhoneNumber (phone) {
     return regex.test(phone);
 }
 
-// while (true) {
-//     let input = prompt ("Введите номер телефона\nпример: +375(29)1111111, 375 29 111 11 11, 37529 111-11-11");
-//     if (checkPhoneNumber (input)) {
-//         alert("Ваш номер телефона: " + input);
-//         break;
-//     }
-//     else alert ("Что-то ввели не так " + input);
-// }
+while (true) {
+    let input = prompt ("Введите номер телефона\nпример: +375(29)1111111, 375 29 111 11 11, 37529 111-11-11");
+    if (checkPhoneNumber (input)) {
+        alert("Ваш номер телефона: " + input);
+        break;
+    }
+    else alert ("Что-то ввели не так " + input);
+}
 
 //TASK 9
 console.log("\nTASK 9:\n");
@@ -80,14 +80,14 @@ function checkEmil (emil) {
     return regex.test(emil);
 }
 
-// while (true) {
-//     let input = prompt ("Введите электронную почту\nпример: mail@mail.by");
-//     if (checkEmil (input)) {
-//         alert("Ваша почта: " + input);
-//         break;
-//     }
-//     else alert ("Что-то ввели не так " + input);
-// }
+while (true) {
+    let input = prompt ("Введите электронную почту\nпример: mail@mail.by");
+    if (checkEmil (input)) {
+        alert("Ваша почта: " + input);
+        break;
+    }
+    else alert ("Что-то ввели не так " + input);
+}
 
 //TASK 10
 console.log("\nTASK 10:\n");
