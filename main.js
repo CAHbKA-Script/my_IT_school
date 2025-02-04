@@ -1,345 +1,107 @@
 //TASK 1
-console.log("Task 1: \n");
-
-function subAndDiv (a, b, c) {
-    return (a - b) / c;
-}
-
-console.log("(27-7)/2=" + subAndDiv(27, 7, 2));
+console.log("\nTASK 1:\n");
+let str1 = "aaa@bbb@ccc";
+let regex = /@/g;
+console.log(str1.replace(regex, "!"));
 
 //TASK 2
-console.log("\nTask 2: \n");
-
-function degree_2_3 (a) {
-    return [a ** 2, a ** 3];
-}
-
-let resFunc2 = degree_2_3(5, 7);
-console.log("5^2=" + resFunc2[0]);
-console.log("5^3=" + resFunc2[1]);
+console.log("\nTASK 2:\n");
+let date = new Date();
+console.log(date);
+let checkDate = (date) => date < 10 ? "0" + date : date;
+let str2 = `${date.getFullYear()}-${checkDate(date.getMonth())}-${checkDate(date.getDate())}`
+console.log(str2);
+let regex2 = /(\d{4})-(\d{2})-(\d{2})/;
+console.log(str2.replace(regex2, '$3/$2/$1'));
 
 //TASK 3
-console.log("\nTask 3: \n");
-
-function min (a, b) {
-    return a < b ? a : b;
-}
-
-function max (a, b) {
-    return a > b ? a : b;
-}
-
-console.log("a = 123, b = 78 \nmin: " + min(123, 78)+"\nmax: " + max(123, 78));
+console.log("\nTASK 3:\n");
+let str3 = "Я учу javascript!";
+let word1 = "учу", word2 = "javascript";
+let res = str3.slice(str3.indexOf(word1), str3.indexOf(word1) + word1.length);
+console.log(res);
+res = str3.substring(str3.indexOf(word2), str3.indexOf(word2) + word2.length);
+console.log(res);
+res = str3.substr(str3.indexOf(word1), word1.length);
+console.log(res)
 
 //TASK 4
-console.log("\nTask 4: \n");
+console.log("\nTASK 4:\n");
+let arr = [4, 2, 5, 19, 13, 0, 10];
 
-function getRangeNumbers() {
-    let start = +prompt("Введите начальлное значение диапазона:");
-    let end = +prompt("Введите конечное значение диапазона:");
-    let arr = [];
-    for (let i = start; i <= end; i++) {
-        arr.push(i);
-    }
-    return arr;
-}
-
-function displayRange (arr) {
-    for (let i = 0; i < arr.length; i++) {
-        console.log(arr[i]);
-    }
-}
-
-let arr = getRangeNumbers();
-displayRange (arr);
+res = Math.pow(arr.reduce((sum, el) => sum += Math.pow(el, 3), 0), 1/2);
+console.log(res);
 
 //TASK 5
-console.log("\nTask 5: \n");
+console.log("\nTASK 5:\n");
+let a = 3, b = 5;
+let c = Math.abs(a - b);
+console.log(`3 - 5 = ${a - b}; c = ${c}`);
 
-function isEven (number) {
-    return number % 2 === 0;
-}
-console.log("Is even function");
-console.log("3 - " + isEven(3) + "; 4 - " + isEven(4) + "; 5 - " + isEven(5) + "; 6 - " + isEven(6));
+a = 6, b = 1;
+c = Math.abs(a - b);
+console.log(`3 - 5 = ${a - b}; c = ${c}`);
 
 //TASK 6
-console.log("\nTask 6: \n");
+console.log("\nTASK 6:\n");
 
-function filterArr (arr) {
-    let result = [];
-    for (let i = 0; i < arr.length; i++) {
-        if (isEven(arr[i])) {
-            result.push(arr[i]);
-        }
-    }
-    return result;
-}
-
-console.log(filterArr(arr));
+console.log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${checkDate(date.getDate())}.${checkDate(date.getMonth())}.${date.getFullYear()}`)
 
 //TASK 7
-console.log("\nTask 7: \n");
-
-function getItems () {
-    let count = +prompt("Введите количество рядов");
-    let item = prompt("Введите символ заполнения фигуры, или нажмите ОК для использования символов по умолчанию");
-    return [count, item];
-}
-
-function drawFigure (count) {
-    if (!arguments[1] || arguments[1] === " ") arguments[1] = "";
-    for (let i = 1; i <= count; i++) {
-        let str = "";
-        for (let j = 0; j < i; j++) {
-            str += arguments[1][0] || i;
-        }
-        console.log(str);
-    }
-}
-
-let [count, item] = getItems();
-drawFigure(count, item);
+console.log("\nTASK 7:\n");
+let str7 = "aa aba abba abbba abca abea";
+let regex7 = /ab+a/g;
+res = str7.match(regex7);
+console.log(...res);
 
 //TASK 8
-console.log("\nTask 8: \n");
+console.log("\nTASK 8:\n");
 
-(function draw (count) {
-    for (let i = 1; i <= count; i++) {
-        console.log(drawLine(i));
-    }
+function checkPhoneNumber (phone) {
+    let regex = /\b\+?\d{3}\s?(\d{2}|\(\d{1,3}\))\s?\d{3}(?<sep>[\s-]?)\d{2}(\k<sep>)\d{2}\b/g;
+    console.log(false);
+    return regex.test(phone);
+}
 
-    console.log("\nRevers\n");
-
-    for (let i = count; i > 0; i--) {
-        console.log(drawLine(i));
-    }
-
-    function drawLine (index) {
-        let str = "";
-        for (let i = 0; i < count - index; i++) {
-            str += " ";
-        }
-    
-        for (let i = 0; i < 2 * index - 1; i++) {
-            str += "*";
-        }
-        return str;
-    }
-}) (count)
+// while (true) {
+//     let input = prompt ("Введите номер телефона\nпример: +375(29)1111111, 375 29 111 11 11, 37529 111-11-11");
+//     if (checkPhoneNumber (input)) {
+//         alert("Ваш номер телефона: " + input);
+//         break;
+//     }
+//     else alert ("Что-то ввели не так " + input);
+// }
 
 //TASK 9
-console.log("\nTask 9: \n");
+console.log("\nTASK 9:\n");
 
-let arrFib = [];
-
-for (let i = 0;; i++) {
-    if (fibNum (i) > 1000) {
-        break;
-    }
-    arrFib.push(fibNum(i));
+function checkEmil (emil) {
+    let regex = /\b[A-Za-z]\w{2,31}[A-Za-z]@[A-Za-z][A-Za-z\.-][A-Za-z]{1,9}(\.[A-Za-z]{2,11})\b/g;
+    return regex.test(emil);
 }
 
-console.log("Числа Фибоначчи:\n");
-console.log(arrFib.join(", "))
-
-function fibNum (n) {
-    if (n < 0) return 0;
-    return n == 0 || n == 1 ? n : fibNum(n - 2) + fibNum(n - 1);
-}
+// while (true) {
+//     let input = prompt ("Введите электронную почту\nпример: mail@mail.by");
+//     if (checkEmil (input)) {
+//         alert("Ваша почта: " + input);
+//         break;
+//     }
+//     else alert ("Что-то ввели не так " + input);
+// }
 
 //TASK 10
-console.log("\nTask 10: \n");
+console.log("\nTASK 10:\n");
 
-let number = +prompt("Введите число: \n");
-console.log("Итоговоая сумма цифр: " + toDigital(number));
-
-function toDigital (number) {
-    let str = String(number);
-    let sum = 0;
-    for (let i = 0; i < str.length; i++) {
-        sum += parseInt(str[i]);
+function checkPath (path) {
+    let regex = /^(?<protocol>https?:\/\/)?(?<domain>[\w.\-]{5,40})(?<otherAddress>[\w.\-\/]{1,100}\/?)?(?<params>\?[\w\.&=\-]{1,100})?(?<hash>#[\w\.&=\-]{1,100})?$/g;
+    let res = regex.exec(path);
+    let returnArr = [];
+    for (let key in res.groups) {
+        returnArr.push(res.groups[key])
     }
-
-    console.log("Число: " + number + ". Cумма цифр: " + sum);
-
-    if (sum > 10) {
-        return toDigital(sum);
-    }
-    return sum;
+    return returnArr;
 }
 
-//TASK 11
-console.log("\nTask 11: \n");
+let path = "https://tech.onliner.by/2018/04/26/smart-do-200/?utm_source=main_tile&utm_medium=smartdo200#zag3"
 
-function displayArr(arr) {
-    let result = "";
-    result += arr.shift();
-    result += arr.length ? ", " + displayArr(arr) : ";";
-    return result;
-}
-
-let recursArr = [1, 3, 5, 1, 4, 7, 9, 10, 12, 11];
-console.log("Исходный массив:\n" + recursArr);
-console.log("Рекурсивный вывод:\n");
-console.log(displayArr(recursArr));
-
-//TASK 12
-console.log("\nTask 12: \n");
-
-function getInformation () {
-    let name = prompt("Введите имя");
-    let surname = prompt("Введите фамилию");
-    let lastname = prompt("Введите отчество");
-    let group = prompt("Введите группу");
-
-    let str = [];
-    str.push("Домашняя работа: \"Функции\"");
-    str.push("Выполнил: студент гр. " + group);
-    str.push(surname + " " + name + " " + lastname);
-
-    let resArr = fillStr(str, getMaxLength(str));
-    resArr.forEach(element => console.log(element));
-
-
-    function getMaxLength (arr) {
-        let maxIndex = 0;
-        for (let i = 1; i < arr.length; i++) {
-            if (arr[maxIndex].length < arr [i].length) {
-                maxIndex = i;
-            }
-        }
-        return arr[maxIndex].length;
-    }
-
-    function fillStr (array, maxLength) {
-        let arr = array;
-        for (let i = 0; i < arr.length; i++) {
-            if (arr[i].length < maxLength) {
-                while (arr[i].length < maxLength) {
-                    arr[i] += " ";
-                }
-            }
-            arr[i] = "*" + arr[i] + "*";
-        }
-
-        let stars = "";
-        while (stars.length < arr[0].length) {
-            stars += "*";
-        }
-
-        arr.unshift(stars);
-        arr.push(stars);
-        return arr;
-    }
-
-}
-
-getInformation();
-
-//TASK 13
-console.log("\nTask 13: \n");
-
-function getMail () {
-
-    while (true) {
-        let mail = prompt("Введите адрес электронной почты");
-        let key = true;
-
-        for (let i = 0; i < mail.length; i++) {
-            if (!checkSymbol(mail[i])) {
-                key = false;
-            }
-        }
-
-        if (!key) {
-            key = false;
-            alert("Адрес электронной почты может содержать только латинские буквы, цифры, точку, дефис, нижнее подчеркивание\n" + mail);
-        }
-
-        let checkDup = checkDuplicate(mail);
-
-        if (!checkDup[0]) {
-            key = false;
-            alert(checkDup[1]);
-        }
-    
-        if (!checkFirstLast(mail)) {
-            key = false;
-            alert("Первый и последний символ должны быть латинскими буквами\n" + mail);
-        }
-
-        let checkName = checkNameLength(mail);
-    
-        if (!checkName[0]) {
-            key = false;
-            alert(checkName[1] + "\n" + mail);
-        }
-
-        let checkDomain = checkDomainLength(mail);
-    
-        if (!checkDomain[0]) {
-            key = false;
-            alert(checkDomain[1] + "\n" + mail);
-        }
-
-        if (key) {
-            alert(mail);
-            break;
-        }
-    } 
-
-}
-
-function checkSymbol (symbol) {
-    if (symbol == "." || symbol == "-" || symbol == "_") return true;
-    if (symbol >= "0" && symbol <= "9") return true;
-    if (symbol >= "@" && symbol <= "Z") return true;
-    if (symbol >= "a" && symbol <= "z") return true;
-    return false;
-}
-
-function checkDuplicate (mail) {
-    let countAt = Array.from(mail).filter(el => el == "@").length;
-    if ( countAt != 1 ) return [false, "В почтовом адресе должен быть только один символ @. Не более, не менее"];
-    let lowerMail = mail.toLowerCase();
-    for (let i = 1; i < lowerMail.length; i++) {
-        if ((lowerMail[i] < "a" || lowerMail[i] > "z") && (lowerMail[i-1] < "a" || lowerMail[i-1] > "z")) {
-            return [false, "В имени почты нельзя использовать идущие друг за другом точку, дефис, нижнее подчеркивание, @"];
-        }
-    }
-    return [true, "Ok"];
-}
-
-function checkFirstLast (mail) {
-    let lowerMail = mail.toLowerCase();
-    if (lowerMail[0] < "a" || lowerMail[0] > "z") return false;
-    if (lowerMail[lowerMail.length - 1] < "a" || lowerMail[lowerMail.length - 1] > "z") return false;
-    return true;
-}
-
-function checkNameLength (mail) {
-    let indexAt = mail.indexOf("@");
-    let nameMail = mail.slice(0, indexAt);
-    if (nameMail.length < 3) {
-        return [false, "Длина имени почты должна быть не менее 3 симовлов. Введенная длина меньше 3"];
-    }
-    else if (nameMail.length > 32) {
-        return [false, "Длина имени почты должна быть не более 32 симовлов. Введенная длина больше 32"];
-    }
-    return [true, "Ok"];
-}
-
-function checkDomainLength (mail) {
-    let indexDot = mail.lastIndexOf(".");
-    let domain = mail.slice(indexDot + 1);
-
-    if (domain.length < 2) {
-        return [false, "Длина домена почты должна быть не менее 2 симовлов. Введенная длина меньше 2"];
-    }
-    else if (domain.length > 11) {
-        return [false, "Длина домена почты должна быть не более 11 симовлов. Введенная длина больше 11"];
-    }
-    return [true, "Ok"];
-}
-
-getMail();
+console.log(checkPath(path));
