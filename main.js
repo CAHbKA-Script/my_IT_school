@@ -1,134 +1,157 @@
-function checkPhoneNumber (phone) {
-    let regex = /\b\+?\d{3}\s?(\d{2}|\(\d{1,3}\))\s?\d{3}(?<sep>[\s-]?)\d{2}(\k<sep>)\d{2}\b/g;
-    return regex.test(phone);
-}
+const html = document.getElementsByTagName("html")[0];
+html.setAttribute("lang", "en");
 
-function checkEmil (emil) {
-    let regex = /\b[A-Za-z]\w{2,31}[A-Za-z]@[A-Za-z][A-Za-z\.-][A-Za-z]{1,9}(\.[A-Za-z]{2,11})\b/g;
-    return regex.test(emil);
-}
+const head = document.querySelector("head");
+const metaCharSet = document.createElement("meta");
+metaCharSet.setAttribute("charset", "UTF-8");
+const metaViewport = document.createElement("meta");
+metaViewport.setAttribute("name", "viewport");
+metaViewport.setAttribute("content", "width=device-width, initial-scale=1.0");
+const title = document.createElement("title");
+title.textContent = "Страница на js";
 
-function checkName (name) {
-    return /^[A-Z][a-z]{1,10}\s[A-Z][a-z]{1,10}(\s[A-Z][a-z]{1,10})?$/.test(name);
-}
+const link1 = document.createElement("link"),
+    link2 = document.createElement("link"),
+    link3 = document.createElement("link");
 
-function Contact () {
+link1.setAttribute("rel", "preconnect");
+link1.setAttribute("href", "https://fonts.googleapis.com");
+link2.setAttribute("rel", "preconnect");
+link2.setAttribute("crossorigin", "");
+link2.setAttribute("href", "https://fonts.gstatic.com");
+link3.setAttribute("href", "https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Montserrat:wght@100..900&family=Open+Sans&display=swap");
+link3.setAttribute("rel", "stylesheet");
 
-    this.setName = (name) => {
-        if (!name) name = prompt ("Введите ФИО");
-        while (!checkName (name)) {
-            name = prompt ("Было введено некорректное ФИО, повторите ввод\nпример: Иван Иванов Иванович");
-            if (checkName (name)) {
-                alert("Вы ФИО: " + name);
-                break;
-            }
-            else alert ("Что-то ввели не так " + name);
-        }
-        return name;
+head.append(metaCharSet, metaViewport, title);
+head.append(link1, link2, link3);
+
+const body = document.querySelector("body");
+const style = document.createElement("style");
+style.textContent = `
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
-    this.getName = () => {
-        return this.name;
+    body {
+        color: #9FA3A7;
     }
 
-    this.setAge = (age) => {
-        if (!age) age = prompt ("Введите возраст");
-        while (!age) {
-            if (+age >= 18 && +age <= 100) {
-                alert("Вы ввели возраст: " + age);
-                break;
-            }
-            else {
-                age = prompt ("Был введен некорректный возраст, повторите ввод (Возраст должен быть больше 18 и меньше 100)\n");
-                alert ("Что-то ввели не так " + age);
-            } 
-        }
-        return age;
+    h2 {
+        font-family: "Arvo";
+        font-weight: normal;
+        line-height: 48px;
+        font-size: 36px;
+        color: #212121;
+        text-align: center;
     }
 
-    this.setPhone = (phone) => {
-        if (!phone) phone = prompt ("Введите номер телефона");
-        while (!checkPhoneNumber (phone)) {
-            phone = prompt ("Был введен некорректный номер телефона, повторите ввод\nпример: +375(29)1111111, 375 29 111 11 11, 37529 111-11-11");
-            if (checkPhoneNumber (phone)) {
-                alert("Вы ввели номер телефона: " + phone);
-                break;
-            }
-            else alert ("Что-то ввели не так " + phone);
-        }
-        return phone;
+    p {
+        font-family: "Open Sans", serif;
+        line-height: 26px;
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 55px;
+        margin-top: 10px;
     }
 
-    this.setEmail = (email) => {
-        if (!email) email = prompt ("Введите адрес почты");
-        while (!checkEmil (email)) {
-            email = prompt ("Был введен некорректный адрес почты, повторите ввод\nпример: mail@mail.by");
-            if (checkPhoneNumber (email)) {
-                alert("Вы ввели адрес почты: " + email);
-                break;
-            }
-            else alert ("Что-то ввели не так " + email);
-        }
-        return email;
+    span, a {
+        font-family: "Montserrat";
+        font-size: 12px;
+        letter-spacing: 2.4px;
+        font-weight: bold;
     }
 
-    this.addDate = (name, age, phone, email) => {
-        this.name = this.setName (name);
-        this.age = this.setAge (age);
-        this.phone = this.setPhone (phone);
-        this.email = this.setEmail (email);
+    a {
+        color: #212121;
+        text-decoration: none;
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 15px 24px;
+        border: 3px solid #FFC80A;
+        border-radius: 30px;
     }
 
-    this.display = () => {
-        console.log(`Имя: ${this.name}. Возраст: ${this.age}. Телефон: ${this.phone}. Email: ${this.email}`);
+    .container {
+        max-width: 1280px;
+        padding: 30px 240px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-}
-
-function PhoneBook () {
-    this.contacts = [];
-
-    this.addContact = (contact) => {
-        if (!contact) {
-            contact = new Contact();
-            contact.addContact();
-        }
-        this.contacts.push(contact);
+    .block_items {
+        display: flex;
     }
 
-    this.displayContact = (name) => {
-        let res = this.contacts.filter((elem) => {
-            return elem.getName() === name;
-        });
-        if (res.length > 0) {
-            console.log(`\nПо ФИО ${name} найдено:`);
-            res.forEach((elem) => elem.display());
-        }
-        else {
-            console.log(`\nПо ФИО ${name} ничего не найдено:`);
-        }
+    .block_items__item {
+        padding: 80px 95px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
     }
 
-    this.displayAll = () => {
-        console.log("\nСписок контактов:");
-        this.contacts.forEach((elem) => elem.display());
+    .block_items__item h2 {
+        margin-top: 20px;
+        margin-bottom: 25px;
     }
-}
 
-const phoneBook = new PhoneBook ();
-let petr = new Contact ();
-petr.addDate("Ivanov Ivan Ivanovich", 19, "+375(29)123-45-67", "ivanov@mail.ru");
-phoneBook.addContact(petr);
-let misha = new Contact ();
-misha.addDate("Zybenko Mikhail Petrovich", 45, "+375(33)777-77-77", "zybenko777p@mail.ru");
-phoneBook.addContact(misha);
-let vasiliy = new Contact ();
-vasiliy.addDate("Vasko Vasiliy Ivanovich", 88, "+375 44 873-23-23", "vasiliy@mail.ru");
-phoneBook.addContact(vasiliy);
-let alex = new Contact ();
-alex.addDate("Kozel Alexandr Igorevich", 22, "+375(33)1212121", "alex_mail@mail.com");
-phoneBook.addContact(alex);
-phoneBook.displayContact("Kozel Alexandr Igorevich");
-phoneBook.displayContact("asd asd asd");
+    .block_items__item p {
+        margin-bottom: 60px;
+        line-height: 22px;
+        font-size: 12px;
+    }
 
-phoneBook.displayAll();
+    .block_items__item:nth-child(1) {
+        border: 2px solid #e4dddd;
+        border-right: 0px;
+        border-radius: 5px 0 0 5px;
+    }
+
+    .block_items__item:nth-child(2) {
+        background-color: #8F75BE;
+    }
+
+    .block_items__item:nth-child(2) span {
+        color: #FFC80A;
+    }
+
+    .block_items__item:nth-child(2) h2, 
+    .block_items__item:nth-child(2) p, 
+    .block_items__item:nth-child(2) a {
+        color: #ffffff;
+    }
+`;
+body.append(style);
+
+const container = document.createElement("div");
+container.classList.add('container');
+const block_items = document.createElement("div");
+block_items.classList.add("block_items");
+const block_items__item = document.createElement("div");
+block_items__item.classList.add("block_items__item");
+
+const h2 = document.createElement("h2");
+h2.innerText = "Choose Your Option";
+const p = document.createElement("p");
+p.textContent = "But I must explain to you how all this mistaken idea of denouncing";
+const span = document.createElement("span");
+span.textContent = "FREELANCER";
+const a = document.createElement("a");
+a.innerText = "start here";
+
+const copyH2 = h2.cloneNode();
+copyH2.textContent = "Initially designed to";
+const copyP = p.cloneNode();
+copyP.textContent = "But I must explain to you how all this mistaken idea of denouncing";
+
+
+block_items__item.append(span, copyH2, copyP, a);
+const item2 = block_items__item.cloneNode(true);
+const studio = item2.querySelector("span");
+studio.textContent = "STUDIO";
+block_items.append(block_items__item, item2);
+container.append(h2, p, block_items);
+body.append(container);
