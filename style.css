@@ -1,0 +1,207 @@
+:root {
+    --body-bgc: #dfded9;
+    --body-text-color: #000000;
+    --header-text-color: #000000;
+    --container-border-color: #000000;
+    --header-bgc: #c6bebb;
+    --item-bottom-border: #998b87;
+    --input-bgc: #c6bebb;
+    --button-bgc: #f49771;
+    --input-text-color: #000000;
+    --button-text-color: #21373a;
+    --ticking-color: #056f04;
+    --ticking-bgc: #a6e7af;
+    --cross-color: #6e0804;
+    --cross-bgc: #fb7e7e;
+    --danger-bgc: #998b87;
+    --menu-bgc: #0c626d;
+    --menu-color: #ff4800;    
+    --edit-bgc: #82b4f6;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Merriweather", sans-serif;
+    background-color: var(--body-bgc);
+    color: var(--body-text-color);
+    font-size: 18px;
+    position: relative;
+}
+
+h2 {
+    text-align: center;
+    padding: 10px 0;
+    color: var(--header-text-color);
+    font-weight: 400;
+}
+
+.container {
+    margin: 20px auto;
+    width: 370px;
+    border: 2px solid var(--container-border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: width .3s ease-in-out;
+}
+
+.header {
+    background-color: var(--header-bgc);
+}
+
+.form {
+    padding: 10px;
+}
+
+.input, 
+.button {
+    font-family: "Merriweather", sans-serif;
+    background-color: var(--input-bgc);
+    color: var(--input-text-color);
+    font-size: 16px;
+    padding: 7px 12px;
+    border: none;
+    border-radius: 10px;
+}
+
+.input::placeholder {
+    color: var(--input-text-color);
+}
+
+.task-items {
+    padding: 10px;
+}
+
+.task-item {
+    border-bottom: 1px solid var(--item-bottom-border);
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    padding: 5px 0;
+    position: relative;
+    gap: 10px;
+}
+
+.task-text {
+    display: inline-block;
+    width: 250px;
+    overflow: hidden;
+    height: auto;
+    word-break: break-all;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+.ticking {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    background-color: var(--ticking-bgc);
+    position: relative;
+}
+
+.ticking.active::before {
+    content: "";
+    height: 15px;
+    width: 3px;
+    background-color: var(--ticking-color);
+    position: absolute;
+    transform: rotate(45deg);
+    top: 5px;
+    left: 12px;
+}
+
+.ticking.active::after {
+    content: "";
+    height: 10px;
+    width: 3px;
+    background-color: var(--ticking-color);
+    position: absolute;
+    transform: rotate(-45deg);
+    top: 9px;
+    left: 5px;
+}
+
+.cross {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    background-color: var(--cross-bgc);
+    position: relative;
+}
+
+.cross::before {
+    content: "";
+    height: 15px;
+    width: 3px;
+    background-color: var(--cross-color);
+    position: absolute;
+    transform: rotate(45deg);
+    left: 9px;
+    top: 4px;
+}
+
+.cross::after {
+    content: "";
+    height: 15px;
+    width: 3px;
+    background-color: var(--cross-color);
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 9px;
+    top: 4px;
+}
+
+.edit {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    background-color: var(--edit-bgc);
+    background-image: url(./images/free-icon-pencil-1828918.png);
+    background-size: 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.danger-button {
+    text-align: right;
+    padding-top: 5px;
+    padding-right: 10px;
+    padding-bottom: 15px;
+}
+
+.danger-button span {
+    padding: 5px;
+    border: 1px solid var(--danger-bgc);
+    border-radius: 10px;
+    background-color: var(--input-bgc);
+}
+
+.menu {
+    width: 50px;
+    position: absolute;
+    height: 20px;
+    background-color: var(--menu-bgc);
+    border: 1px solid var(--menu-color);
+    color: var(--menu-color);
+    border-radius: 3px;
+    font-size: 15px;
+    text-align: center;
+}

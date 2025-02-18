@@ -1,157 +1,198 @@
-const html = document.getElementsByTagName("html")[0];
-html.setAttribute("lang", "en");
+function TaskList() {
+    this.taskList = new Map(),
+    this.getTask = (id) => {
+        return this.taskList.get(id);
+    }
+    this.push = (task) => {
+        this.taskList.set(task.id, task);
+    }
+    this.remove = (id) => {
+        this.taskList.delete(id);
+    }
+    this.changeComplete = (id) => {
+        this.taskList.get(id).complete = !this.taskList.get(id).complete;
+    }
+    this.editText = (id, newText) => {
+        this.taskList.get(id).text = newText;
+    }
+    this.keys = () => {
+        return [...this.taskList.keys()];
+    }
+    this.clear = () => {
+        this.taskList.clear();
+    }
+}
 
-const head = document.querySelector("head");
-const metaCharSet = document.createElement("meta");
-metaCharSet.setAttribute("charset", "UTF-8");
-const metaViewport = document.createElement("meta");
-metaViewport.setAttribute("name", "viewport");
-metaViewport.setAttribute("content", "width=device-width, initial-scale=1.0");
-const title = document.createElement("title");
-title.textContent = "Страница на js";
+function Task (id, complete, text) {
+    this.id = id, 
+    this.complete = complete,
+    this.text = text
+}
 
-const link1 = document.createElement("link"),
-    link2 = document.createElement("link"),
-    link3 = document.createElement("link");
+function addTaskList(inputSelector, formSelector, listSelector) {
+    const input = document.querySelector(inputSelector);
+    const form = document.querySelector(formSelector);
+    const list = document.querySelector(listSelector);
 
-link1.setAttribute("rel", "preconnect");
-link1.setAttribute("href", "https://fonts.googleapis.com");
-link2.setAttribute("rel", "preconnect");
-link2.setAttribute("crossorigin", "");
-link2.setAttribute("href", "https://fonts.gstatic.com");
-link3.setAttribute("href", "https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&family=Montserrat:wght@100..900&family=Open+Sans&display=swap");
-link3.setAttribute("rel", "stylesheet");
+    const taskList = new TaskList();
 
-head.append(metaCharSet, metaViewport, title);
-head.append(link1, link2, link3);
-
-const body = document.querySelector("body");
-const style = document.createElement("style");
-style.textContent = `
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+    const getId = () => {
+        const idList = taskList.keys();
+        const id = Math.floor(Math.random() * 9999);
+        if (idList.includes(id)) return "" + getId();
+        return "" + id;
     }
 
-    body {
-        color: #9FA3A7;
+    (function checkStorage () {
+        let idList = taskList.keys();
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (idList.includes(key)) continue;
+            console.log(JSON.parse(localStorage.getItem(key)));
+            taskList.push(JSON.parse(localStorage.getItem(key)));
+        }
+        idList = taskList.keys();
+        const itemsId = [...document.querySelectorAll(".task-item")].map(el => el.getAttribute("id"));
+
+        for (let id of idList) {
+            console.log(id)
+            if (!itemsId.includes(id)) createTaskItem(taskList.getTask(id));
+        }
+    })()
+
+    function createTask () {
+        const newTask = new Task(getId(), false, input.value);
+        taskList.push(newTask);
+        localStorage.setItem(newTask.id, JSON.stringify(newTask));
+        createTaskItem(newTask);
     }
 
-    h2 {
-        font-family: "Arvo";
-        font-weight: normal;
-        line-height: 48px;
-        font-size: 36px;
-        color: #212121;
-        text-align: center;
+    function changeStorageCompleted(task) {
+        console.log(task)
+        localStorage.setItem(task.id, JSON.stringify(task));
     }
 
-    p {
-        font-family: "Open Sans", serif;
-        line-height: 26px;
-        font-size: 14px;
-        text-align: center;
-        margin-bottom: 55px;
-        margin-top: 10px;
+    function deleteTask (id) {
+        taskList.remove(id);
+        localStorage.removeItem(id);
+        const taskItem = document.getElementById(id);
+        taskItem.remove();
     }
 
-    span, a {
-        font-family: "Montserrat";
-        font-size: 12px;
-        letter-spacing: 2.4px;
-        font-weight: bold;
+    // function createContextMenu(x, y) {
+    //     const menu = document.createElement("div");
+    //     menu.classList.add("menu");
+    //     menu.style.top = y + "px";
+    //     menu.style.left = x + "px";
+    //     menu.innerText = "Edit";
+    //     document.body.appendChild(menu);
+    // }
+
+
+    function createTaskItem (task) {
+        const item = document.createElement("div");
+        item.setAttribute("id", task.id);
+        item.classList.add("task-item");
+        const ticking = document.createElement("div");
+        ticking.classList.add("ticking");
+
+        const textTask = document.createElement("div");
+        textTask.classList.add("task-text");
+        textTask.textContent = task.text;
+        textTask.addEventListener("dblclick", function() {
+            if(!this.classList.contains("completed")) {
+                this.setAttribute("contentEditable", "true");
+                this.focus();
+            }
+        });
+        textTask.addEventListener("mousedown",  function(event) {
+            if(!this.classList.contains("completed")) {
+                if (event.button === 2) {
+                    this.setAttribute("contentEditable", "true");
+                    this.focus();
+                }
+            }
+        });
+        textTask.addEventListener("contextmenu",  function(event) {
+            if(!this.classList.contains("completed")) 
+                event.preventDefault();
+        });
+        textTask.addEventListener("keydown", function(event) {
+            if (event.altKey && event.key === "Enter") {
+                console.log("alt enter")
+                this.setAttribute("contentEditable", "false");
+                if (this.textContent.length > 0) {
+                    taskList.editText(task.id, this.textContent);
+                    localStorage.setItem(task.id, JSON.stringify(task));
+                }
+                else {
+                    this.textContent = task.text;
+                }
+            } 
+        });
+
+        if (task.complete) {    
+            textTask.classList.add("completed")
+            ticking.classList.add("active");
+        }
+        ticking.addEventListener("click", function() {
+            this.classList.toggle("active");
+            textTask.classList.toggle("completed")
+            taskList.changeComplete(task.id);
+            changeStorageCompleted(taskList.getTask(task.id));
+        });
+
+        // textTask.addEventListener("contextmenu", function (event)  {
+        //     event.preventDefault();
+        //     createContextMenu(event.pageX, event.pageY);
+        // });
+
+        // textTask.addEventListener("click", function (event)  {
+        // });
+        // ///////
+        // textTask.addEventListener("mousedown", () => false);
+        // ///////
+
+        const div = document.createElement("div");
+        div.classList.add("cross");
+        div.addEventListener("click", () => {
+            if (confirm("Вы действительно хотите удалить эту задачу?")) {
+                deleteTask(task.id);
+            }
+        });
+
+        const editEl = document.createElement("div");
+        editEl.classList.add("edit");
+        editEl.addEventListener("click", () => {
+            if (textTask.getAttribute("contentEditable") === "true") {
+                textTask.setAttribute("contentEditable", "false");
+                return;
+            }
+            if(!textTask.classList.contains("completed")) {
+                textTask.setAttribute("contentEditable", "true");
+                textTask.focus();
+            }
+        })
+
+        item.append(ticking, textTask, editEl, div);
+        list.appendChild(item);
+        input.value = "";
     }
 
-    a {
-        color: #212121;
-        text-decoration: none;
-        text-transform: uppercase;
-        display: inline-block;
-        padding: 15px 24px;
-        border: 3px solid #FFC80A;
-        border-radius: 30px;
+    const submitAction = (event) => {
+        event.preventDefault();
+        createTask();
     }
 
-    .container {
-        max-width: 1280px;
-        padding: 30px 240px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+    form.addEventListener("submit", submitAction);
+    const removeAll = document.querySelector(".danger-button span");
+    removeAll.addEventListener("click", () => {
+        if (confirm("Вы действительно хотите удалить все задачи?")) {
+            taskList.clear();
+            localStorage.clear();
+            list.innerHTML = "";    
+        }
+    });
+}
 
-    .block_items {
-        display: flex;
-    }
-
-    .block_items__item {
-        padding: 80px 95px;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .block_items__item h2 {
-        margin-top: 20px;
-        margin-bottom: 25px;
-    }
-
-    .block_items__item p {
-        margin-bottom: 60px;
-        line-height: 22px;
-        font-size: 12px;
-    }
-
-    .block_items__item:nth-child(1) {
-        border: 2px solid #e4dddd;
-        border-right: 0px;
-        border-radius: 5px 0 0 5px;
-    }
-
-    .block_items__item:nth-child(2) {
-        background-color: #8F75BE;
-    }
-
-    .block_items__item:nth-child(2) span {
-        color: #FFC80A;
-    }
-
-    .block_items__item:nth-child(2) h2, 
-    .block_items__item:nth-child(2) p, 
-    .block_items__item:nth-child(2) a {
-        color: #ffffff;
-    }
-`;
-body.append(style);
-
-const container = document.createElement("div");
-container.classList.add('container');
-const block_items = document.createElement("div");
-block_items.classList.add("block_items");
-const block_items__item = document.createElement("div");
-block_items__item.classList.add("block_items__item");
-
-const h2 = document.createElement("h2");
-h2.innerText = "Choose Your Option";
-const p = document.createElement("p");
-p.textContent = "But I must explain to you how all this mistaken idea of denouncing";
-const span = document.createElement("span");
-span.textContent = "FREELANCER";
-const a = document.createElement("a");
-a.innerText = "start here";
-
-const copyH2 = h2.cloneNode();
-copyH2.textContent = "Initially designed to";
-const copyP = p.cloneNode();
-copyP.textContent = "But I must explain to you how all this mistaken idea of denouncing";
-
-
-block_items__item.append(span, copyH2, copyP, a);
-const item2 = block_items__item.cloneNode(true);
-const studio = item2.querySelector("span");
-studio.textContent = "STUDIO";
-block_items.append(block_items__item, item2);
-container.append(h2, p, block_items);
-body.append(container);
+addTaskList(".form input", ".form", ".task-items");
