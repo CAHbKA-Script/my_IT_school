@@ -166,6 +166,13 @@ function addTaskList(inputSelector, formSelector, listSelector) {
         editEl.addEventListener("click", () => {
             if (textTask.getAttribute("contentEditable") === "true") {
                 textTask.setAttribute("contentEditable", "false");
+                if (textTask.textContent.length > 0) {
+                    taskList.editText(task.id, textTask.textContent);
+                    localStorage.setItem(task.id, JSON.stringify(task));
+                }
+                else {
+                    this.textContent = task.text;
+                }
                 return;
             }
             if(!textTask.classList.contains("completed")) {
