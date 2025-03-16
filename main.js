@@ -24,7 +24,7 @@ function Contact () {
             }
             else alert ("Что-то ввели не так " + name);
         }
-        return name;
+        this.name = name;
     }
 
     this.getName = () => {
@@ -43,7 +43,7 @@ function Contact () {
                 alert ("Что-то ввели не так " + age);
             } 
         }
-        return age;
+        this.age = age;
     }
 
     this.setPhone = (phone) => {
@@ -56,7 +56,7 @@ function Contact () {
             }
             else alert ("Что-то ввели не так " + phone);
         }
-        return phone;
+        this.phone = phone;
     }
 
     this.setEmail = (email) => {
@@ -69,14 +69,14 @@ function Contact () {
             }
             else alert ("Что-то ввели не так " + email);
         }
-        return email;
+        this.email = email;
     }
 
     this.addDate = (name, age, phone, email) => {
-        this.name = this.setName (name);
-        this.age = this.setAge (age);
-        this.phone = this.setPhone (phone);
-        this.email = this.setEmail (email);
+        this.setName (name);
+        this.setAge (age);
+        this.setPhone (phone);
+        this.setEmail (email);
     }
 
     this.display = () => {
@@ -115,7 +115,20 @@ function PhoneBook () {
     }
 }
 
-const phoneBook = new PhoneBook ();
+function NewPhoneBook () {
+    PhoneBook.call(this);
+
+    this.displayAll = () => {
+        console.log("\nСписок контактов:");
+        this.contacts.forEach((elem) => {
+            elem.display();
+            console.log("__________________________________________________________________________________________________");
+        });
+    }
+}
+
+const phoneBook = new NewPhoneBook ();
+
 let petr = new Contact ();
 petr.addDate("Ivanov Ivan Ivanovich", 19, "+375(29)123-45-67", "ivanov@mail.ru");
 phoneBook.addContact(petr);
@@ -132,3 +145,158 @@ phoneBook.displayContact("Kozel Alexandr Igorevich");
 phoneBook.displayContact("asd asd asd");
 
 phoneBook.displayAll();
+
+
+
+
+//Вторая часть задания
+
+function ElementCreator() {
+
+    /**
+     * @param {string} tagName
+     */
+    this.create = (tagName) => {
+        return document.createElement(tagName);
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string} name
+     * @param {string} value
+     */
+    this.attr = (element, name, value) => {
+        if (value) {
+            element.setAttribute(name, value);
+        }
+        else {
+            return element.getAttribute(name);
+        }
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string} value
+     */
+    this.html = (element, value) => {
+        if (value) {
+            element.innerHTML = value;
+        }
+        else {
+            return element.innerHTML;
+        }
+    }
+
+    /**
+     * @param {string} selector
+     * @param {HTMLElement} element
+     */
+    this.search = (selector, element) => {
+        let res = null;
+        if (element) {
+            res = element.querySelectorAll(selector);
+        }
+        else {
+            res = document.querySelectorAll(selector);
+        }
+        return res;
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string} className
+     */
+    this.hasClass = (element, className) => {
+        return element.classList.contains(className);
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string} className
+     */
+    this.addClass = function (element, className) {
+        if (!this.hasClass(element, className)) {
+            element.classList.add(className);
+        }
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string} className
+     */
+    this.removeClass = function (element, className) {
+        if (this.hasClass(element, className)) {
+            element.classList.remove(className);
+        }
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {string} className
+     */
+    this.toggleClass = function (element, className) {
+        if (!this.hasClass(element, className)) {
+            element.classList.add(className);
+        }
+        else {
+            element.classList.remove(className);
+        }
+    }
+
+    /**
+     * @param {HTMLElement} element
+     * @param {HTMLElement} newElement
+     * @param {HTMLElement} beforeElement
+     */
+    this.append = (element, newElement, beforeElement) => {
+        if (beforeElement) {
+            element.insertBefore(newElement, beforeElement);
+        }
+        else {
+            element.append(newElement);
+        }
+    }
+    
+    /**
+     * @param {HTMLElement} element
+     * @param {string} eventName
+     * @param {Function} functionName
+     */
+    this.on = (element, eventName, functionName) => {
+        element.addEventListener(eventName, functionName);
+    }
+}
+
+const dom = new ElementCreator();
+const container = dom.search(".container")[0];
+
+function butHandler (event) {
+    const text = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex, rem!";
+    const p = dom.create("p");
+    dom.addClass(p, "text");
+    dom.html(p, text);
+
+    dom.on(p, "mouseover", clueEventOver);
+    dom.on(p, "mouseout", clueEventOut);
+
+    dom.append(container, p);
+}
+
+
+const but = dom.create("button");
+dom.html(but, "Нажать для добавления элемента");
+dom.on(but, "click", butHandler);
+dom.append(container, but);
+
+const input = dom.search(".form input")[0];
+dom.attr(input, "placeholder", "Введите класс элмента для переключения (удаления/добавления)");
+
+const classSwitch = dom.search(".switch")[0];
+dom.on(classSwitch, "click", () => {
+    const className = input.value;
+    const elements = dom.search(".container p");
+    if (elements.length > 0) {
+        elements.forEach(el => dom.toggleClass(el, className));
+    }
+    input.value = "";
+});

@@ -1,0 +1,64 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    margin: 20px auto;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.text {
+    padding: 20px;
+    border: 1px solid;
+    margin: 10px;
+    border-radius: 5px;
+    position: relative;
+}
+
+input {
+    min-width: 420px;
+}
+
+input, button {
+    padding: 3px;
+    font-size: 13px;
+    border-radius: 5px;
+}
+
+.active {
+    background-color: #c6fba7;
+}
+
+.red {
+    background-color: #fba7a7;
+}
+
+.yellow {
+    background-color: #fbf5a7;
+}
+
+.clue-item {
+    position: absolute;
+    z-index: 200;
+    padding: 3px;
+    border: 1px solid #ff4343;
+    background-color: #fcbcbc;
+    border-radius: 3px;
+    width: max-content;
+    font-size: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+}
