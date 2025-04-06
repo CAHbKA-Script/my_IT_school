@@ -33,3 +33,4 @@ class User {
 }
 
 export default User;
+export {generateId};

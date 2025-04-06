@@ -1,10 +1,11 @@
-import User from "./user.js";
+import User, { generateId } from "./user.js";
 
 class Contacts {
     /**@type {User[]} */
     data = [];
 
     add ({id, name, email, address, phone}) {
+        id = id ?? generateId();
         const user = new User({id, name, email, address, phone});
         this.data.push(user);
         return id;
